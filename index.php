@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Get a web file (HTML, XHTML, XML, image, etc.) from a URL.  Return an
  * array containing the HTTP server response header fields and content.
@@ -36,20 +37,34 @@ function get_web_page( $url ) {
   $header['content'] = $content;
   return $header;
 }
-$url = 'http://podservice.sprep.org';
+
+$allowed_sites = [
+  'podservice.sprep.org',
+  'podadmin.sprep.org',
+  'confluence.app.sprep.org:8090',
+  'jira.app.sprep.org:8080',
+  'servicedesk.sprep.org:8080',
+];
+
+$url = '';
 if (isset($_GET['site'])) {
   $url = filter_input(INPUT_GET,"site",FILTER_SANITIZE_STRING);
 }
+
+$allow = in_array($url, $allowed_sites);
+
+if ($allow) {
+  $result = get_web_page( $url );
+  header('Status: '.$result['http_code'].' '.$result['errmsg']);
+
+  if ( $result['http_code'] != 200 ) {
+    echo 'down';
+  }
+  else {
+    echo 'ok';
+  }
+}
 else {
+  header('Status: 404');
+  echo 'unsupported url';
 }
-
-$result = get_web_page( $url );
-
-if ( $result['http_code'] != 200 ) {
-  echo 'down';
-}
-else {
-  echo 'up';
-}
-
-echo 'done';
