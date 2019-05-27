@@ -12,6 +12,17 @@ eg mysite.com/?site=internalapp.local
 
 Url must be on the pre-allowed site
 
+```
+# copy sites-default as sites.php
+cp sites-default.php sites.php
+
+# update sites.php file with urls to test
+nano sites.php
+
+# log into status cake and set up site montioring and alerts
+
+```
+
 ## Requirement
 
 * php-curl
