@@ -1,0 +1,4 @@
+<?php
+
+$allowed_sites = [
+];

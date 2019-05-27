@@ -1,5 +1,9 @@
 <?php
 
+# requires php-curl package
+include('sites-default.php');
+include('sites.php');
+
 /**
  * Get a web file (HTML, XHTML, XML, image, etc.) from a URL.  Return an
  * array containing the HTTP server response header fields and content.
@@ -22,6 +26,7 @@ function get_web_page( $url ) {
     CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
     CURLOPT_TIMEOUT        => 120,      // timeout on response
     CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+    CURLOPT_SSL_VERIFYPEER => 0,        // do not check certificates
   );
 
   $ch      = curl_init( $url );
@@ -37,14 +42,6 @@ function get_web_page( $url ) {
   $header['content'] = $content;
   return $header;
 }
-
-$allowed_sites = [
-  'podservice.sprep.org',
-  'podadmin.sprep.org',
-  'confluence.app.sprep.org:8090',
-  'jira.app.sprep.org:8080',
-  'servicedesk.sprep.org:8080',
-];
 
 $url = '';
 if (isset($_GET['site'])) {
